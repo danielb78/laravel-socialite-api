@@ -15,7 +15,9 @@ class SocialiteController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('google')->stateless()->redirect();
+        return [
+            'redirect_url' => (Socialite::driver('google')->stateless()->redirect())->getTargetUrl(),
+        ];
     }
 
     /**
@@ -27,6 +29,15 @@ class SocialiteController extends Controller
     {
         $user = Socialite::driver('google')->stateless()->user();
 
-        return json_encode($user);
+        return [
+            'id'            => $user->getId(),
+            'nick_name'     => $user->getNickname(),
+            'name'          => $user->getName(),
+            'email'         => $user->getEmail(),
+            'avatar'        => $user->getAvatar(),
+            'token'         => $user->token,
+            'refresh_token' => $user->refreshToken,
+            'expires_in'    => $user->expiresIn,
+        ];
     }
 }
