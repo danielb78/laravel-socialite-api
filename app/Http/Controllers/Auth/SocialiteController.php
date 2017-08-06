@@ -2,34 +2,34 @@
 
 namespace lsa\Http\Controllers\Auth;
 
-use Illuminate\Http\Response;
 use Laravel\Socialite\Facades\Socialite;
 use lsa\Http\Controllers\Controller;
+use lsa\Lib\Reply;
 
 class SocialiteController extends Controller
 {
     /**
      * Redirect the user to the Google authentication page.
      *
-     * @return Response
+     * @return Reply
      */
     public function redirectToProvider()
     {
-        return [
+        return $this->success([
             'redirect_url' => (Socialite::driver('google')->stateless()->redirect())->getTargetUrl(),
-        ];
+        ]);
     }
 
     /**
      * Obtain the user information from Google.
      *
-     * @return Response
+     * @return Reply
      */
     public function handleProviderCallback()
     {
         $user = Socialite::driver('google')->stateless()->user();
 
-        return [
+        return $this->success([
             'id'            => $user->getId(),
             'nick_name'     => $user->getNickname(),
             'name'          => $user->getName(),
@@ -38,6 +38,6 @@ class SocialiteController extends Controller
             'token'         => $user->token,
             'refresh_token' => $user->refreshToken,
             'expires_in'    => $user->expiresIn,
-        ];
+        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+define('BOOTSTRAP_START_TIME', microtime(true));
+
 return [
 
     /*
